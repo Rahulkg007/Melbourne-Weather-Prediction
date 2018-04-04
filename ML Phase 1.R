@@ -18,7 +18,7 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 weather <- read.csv('weatherAUS 2.csv')
 
 # Initial Filters
-Melbourne = weather[weather$Location == 'Melbourne',]
+Melbourne = weather[weather$Location %in% c('Melbourne','MelbourneAirport'),]
 
 table(Melbourne$RainTomorrow,useNA = 'ifany')
 Melbourne = Melbourne %>% drop_na(RainTomorrow)
@@ -38,3 +38,5 @@ prop.table(table(x$RainToday))
 
 y = Melbourne[Melbourne$Temp9am < Melbourne$Temp3pm, ]
 prop.table(table(y$RainToday))
+
+prop.table(table(Melbourne$RainTomorrow)) * 100
