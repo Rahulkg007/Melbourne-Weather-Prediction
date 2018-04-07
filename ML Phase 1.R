@@ -270,11 +270,16 @@ ggplot(monthly_rainfall,aes(month,avgRainfall)) +
 # Delta change
 #################
 
-x = Melbourne
-x$deltaCloud = x$Cloud9am - x$Cloud3pm
-ggplot(x,aes(deltaCloud, fill=RainToday)) + geom_bar(position = 'dodge') 
-
-
+delta_cloud = Melbourne
+delta_cloud$deltaCloud = x$Cloud9am - x$Cloud3pm
+ggplot(delta_cloud, aes(deltaCloud, fill=RainToday)) + 
+  geom_bar(position = 'dodge') +
+  ggtitle('Melbourne Weather - Cloud Delta Change in Oktas') +
+  xlab('Oktas') +
+  ylab('') +
+  labs(subtitle = '0 is completely clear sky and 8 is completely overcast',
+       caption="Source - Commonwealth of Australia , Bureau of Meteorology") +
+  theme_weather
 
 
 
