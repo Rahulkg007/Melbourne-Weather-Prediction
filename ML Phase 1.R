@@ -98,6 +98,8 @@ correlation_matrix = cor(Melbourne[,c(3:7,9,12:21)],use='na.or.complete')
 corrplot(correlation_matrix, order = 'AOE', type = "upper")
 # Very few factors has high correlation
 
+
+
 # ---------------------------------------------------------
 # Relationship Between Rain and Minimum Maximum Temperature
 # Convert wide to long
@@ -115,3 +117,40 @@ ggplot(Temperature,aes(variable,value)) +
   ylab('Temperature(Celsius)') +
   labs(subtitle = 'Difference between High and low temperature is less on Rainy day') +
   theme(plot.subtitle = element_text(color = '#333333',face = "italic"))
+
+# ------------------
+# Monthly Average Rainfall from 2009-2016
+
+head(Melbourne)
+
+month_raintoday = Melbourne %>%
+  select(Month,RainToday) %>%
+  group_by(Month) %>%
+  summarise(monthTotal = sum(Rainfall, na.rm = TRUE))
+
+ggplot(month_raintoday,aes(x=Month)) + geom_bar(aes(fill=RainToday),position = "dodge")
+
+total_yearmonth_rainfall$month = substr(total_yearmonth_rainfall$MonthYear, 1, 3)
+
+monthly_rainfall =  total_yearmonth_rainfall %>%
+  group_by(month) %>%
+  summarise(avgRainfall = mean(monthTotal))
+
+month_raintoday$Month = factor(month_raintoday$Month,
+                                levels = c('Jan','Feb','Mar','Apr',
+                                           'May','Jun','Jul','Aug',
+                                           'Sep','Oct','Nov','Dec'),
+                                ordered = TRUE)
+
+ggplot(monthly_rainfall,aes(month,avgRainfall)) +
+  geom_bar(stat = 'identity',fill="#006699") +
+  ggtitle('Monthly Average Rainfall, 2009-2016') +
+  xlab('Months') +
+  ylab('Rainfall(MM)') +
+  labs(subtitle = 'Rainfall is increasing from Jan to Dec with little variation') +
+  theme(plot.subtitle = element_text(color = '#333333',face = "italic"))
+
+# Except Nov, the variation isn't too much between Consecutive years. The possibility of getting rain 
+# in Feb is almost same as Mar or Apr, hence we connot conclude the rain by month. 
+# Melbourne doesn't have a fix rainy season hence average rainfall is distributed
+
