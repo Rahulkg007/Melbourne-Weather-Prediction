@@ -92,6 +92,8 @@ library(tidyverse)
 require(corrplot)
 library(reshape2)
 theme_set(theme_minimal())
+theme_weather <- theme_minimal() +
+  theme(plot.subtitle = element_text(color = '#333333',face = "italic"))
 ```
 
 Text
